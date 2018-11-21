@@ -84,16 +84,23 @@ class App extends Component {
     this.container = createRef();
   }
 
-  onDragEnd = result => {
-    // dropped outside the list
-    if (!result.destination) {
+  handleDragEnd = dragEvent => {
+    const {
+      container: { current: container }
+    } = this;
+    const { draggableId } = dragEvent;
+    const el = container.querySelector(`#${draggableId}`);
+    const menu = el ? el.querySelector("select") : null;
+    const menuIsEmpty = menu && menu.value === "skip";
+    // Dropped outside the list or an empty option is selected
+    if (!dragEvent.destination || menuIsEmpty) {
       return;
     }
 
     const items = reorder(
       this.state.items,
-      result.source.index,
-      result.destination.index
+      dragEvent.source.index,
+      dragEvent.destination.index
     );
 
     this.setState({
@@ -149,7 +156,7 @@ class App extends Component {
     return (
       <div ref={this.container}>
         <h1 style={{ textAlign: "center" }}>Rank your favorite candidates</h1>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
               <form
@@ -160,6 +167,7 @@ class App extends Component {
                   <Draggable key={item.id} draggableId={item.id} index={i}>
                     {(provided, snapshot) => (
                       <div
+                        id={`option-${i}`}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
