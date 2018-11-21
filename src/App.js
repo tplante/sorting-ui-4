@@ -22,7 +22,7 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-const grid = 8;
+const grid = 12;
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   padding: grid * 2,
@@ -33,13 +33,13 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
-  width: 250,
+  width: 280,
   margin: "0 auto"
 });
 
 const buttonStyles = {
   width: "100%",
-  padding: "8px 0",
+  padding: `${grid}px 0`,
   textAlign: "center",
   fontWeight: "bold",
   cursor: "pointer",
@@ -54,8 +54,10 @@ const optionStyles = {
 };
 const itemStyles = {
   display: "inline-block",
-  marginRight: 8,
-  padding: 8,
+  textAlign: "center",
+  width: 20,
+  marginRight: grid,
+  padding: grid,
   backgroundColor: "#2c5c6c",
   color: "white",
   borderRadius: "3px 0 0 3px",
