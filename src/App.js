@@ -22,24 +22,24 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-const grid = 12;
+const grid = 20;
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+  padding: grid,
+  margin: `0 0 ${grid / 2}px 0`,
   // Change background colour if dragging
   background: isDragging ? "lightgreen" : "#d8d8d8",
   // Styles to apply on draggables
   ...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
-  width: 280,
+  width: 330,
   margin: "0 auto"
 });
 
 const buttonStyles = {
   width: "100%",
-  padding: `${grid}px 0`,
+  padding: `${grid / 2}px 0`,
   textAlign: "center",
   fontWeight: "bold",
   cursor: "pointer",
