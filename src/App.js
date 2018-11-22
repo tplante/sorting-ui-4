@@ -94,7 +94,9 @@ class App extends Component {
     const menus = Array.from(container.querySelectorAll("select"));
     const preventReorder =
       menu.value === "skip" ||
-      menus.some((m, i) => m.value === "skip" && destination.index === i);
+      menus.some(
+        (m, i) => m.value === "skip" && destination && destination.index === i
+      );
     // Dropped outside the list or an empty option is not last index
     if (!destination || preventReorder) {
       return;
