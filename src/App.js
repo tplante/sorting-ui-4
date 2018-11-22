@@ -88,12 +88,15 @@ class App extends Component {
     const {
       container: { current: container }
     } = this;
-    const { draggableId } = dragEvent;
-    const el = container.querySelector(`#${draggableId}`);
-    const menu = el ? el.querySelector("select") : null;
-    const menuIsEmpty = menu && menu.value === "skip";
-    // Dropped outside the list or an empty option is selected
-    if (!dragEvent.destination || menuIsEmpty) {
+    const { destination } = dragEvent;
+    const menus = Array.prototype.slice.call(
+      container.querySelectorAll("select")
+    );
+    const preventReorder = menus.some(
+      (m, i) => m.value === "skip" && destination.index <= i
+    );
+    // Dropped outside the list or an empty option is not last index
+    if (!destination || preventReorder) {
       return;
     }
 
