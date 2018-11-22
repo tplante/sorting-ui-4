@@ -1,6 +1,7 @@
 import React, { Component, createRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+const SKIP_VALUE = "skip";
 const options = [
   { candidate: "Barack Obama", id: "option-0", selected: false },
   { candidate: "George Bush", id: "option-1", selected: false },
@@ -93,9 +94,10 @@ class App extends Component {
     // Convert NodeList to array
     const menus = Array.from(container.querySelectorAll("select"));
     const preventReorder =
-      menu.value === "skip" ||
+      menu.value === SKIP_VALUE ||
       menus.some(
-        (m, i) => m.value === "skip" && destination && destination.index === i
+        (m, i) =>
+          m.value === SKIP_VALUE && destination && destination.index === i
       );
     // Dropped outside the list or an empty option is not last index
     if (!destination || preventReorder) {
@@ -116,14 +118,14 @@ class App extends Component {
     } = this;
     const menus = container.querySelectorAll("select");
     const menuId = parseInt(id.slice(-1));
-    const hasPreviousValue = previousValue && previousValue !== "skip";
+    const hasPreviousValue = previousValue && previousValue !== SKIP_VALUE;
     if (hasPreviousValue) {
       const previousOptionIndex = options.findIndex(
         o => o.id === previousValue
       );
       options[previousOptionIndex].selected = false;
     }
-    if (value !== "skip") {
+    if (value !== SKIP_VALUE) {
       const optionIndex = options.findIndex(o => o.id === value);
       options[optionIndex].selected = true;
       if (!hasPreviousValue && menuId < options.length - 1) {
@@ -185,7 +187,7 @@ class App extends Component {
                           style={dropdownStyles}
                           onChange={this.handleChange}
                         >
-                          <option defaultValue value="skip">
+                          <option defaultValue value={SKIP_VALUE}>
                             Select an option (or skip)
                           </option>
                           {this.state.options.map((o, j) => (
