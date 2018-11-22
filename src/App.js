@@ -89,9 +89,8 @@ class App extends Component {
       container: { current: container }
     } = this;
     const { destination, source } = dragEvent;
-    const menus = Array.prototype.slice.call(
-      container.querySelectorAll("select")
-    );
+    // Convert NodeList to array
+    const menus = Array.from(container.querySelectorAll("select"));
     const preventReorder = menus.some(
       (m, i) => m.value === "skip" && destination.index <= i
     );
