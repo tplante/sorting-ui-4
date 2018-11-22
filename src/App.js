@@ -88,12 +88,13 @@ class App extends Component {
     const {
       container: { current: container }
     } = this;
-    const { destination, source } = dragEvent;
+    const { destination, source, draggableId } = dragEvent;
+    const menu = container.querySelector(`#${draggableId} select`);
     // Convert NodeList to array
     const menus = Array.from(container.querySelectorAll("select"));
-    const preventReorder = menus.some(
-      (m, i) => m.value === "skip" && destination.index <= i
-    );
+    const preventReorder =
+      menu.value === "skip" ||
+      menus.some((m, i) => m.value === "skip" && destination.index === i);
     // Dropped outside the list or an empty option is not last index
     if (!destination || preventReorder) {
       return;
