@@ -178,7 +178,7 @@ class App extends Component {
                           ),
                           ...optionStyles
                         }}
-                        key={item.candidate}
+                        key={item.id}
                       >
                         <label style={itemStyles} htmlFor={`menu-${i}`}>
                           {i + 1}
@@ -193,7 +193,7 @@ class App extends Component {
                           </option>
                           {this.state.options.map((o, j) => (
                             <option
-                              key={o.candidate}
+                              key={o.id}
                               value={o.candidate}
                               disabled={o.selected}
                             >
