@@ -119,12 +119,12 @@ class App extends Component {
     const hasPreviousValue = previousValue && previousValue !== "skip";
     if (hasPreviousValue) {
       const previousOptionIndex = options.findIndex(
-        o => o.candidate === previousValue
+        o => o.id === previousValue
       );
       options[previousOptionIndex].selected = false;
     }
     if (value !== "skip") {
-      const optionIndex = options.findIndex(o => o.candidate === value);
+      const optionIndex = options.findIndex(o => o.id === value);
       options[optionIndex].selected = true;
       if (!hasPreviousValue && menuId < options.length - 1) {
         items.push(options[menuId + 1]);
@@ -134,7 +134,7 @@ class App extends Component {
         const { value: menuValue } = menu;
         if (i > menuId) {
           items.pop();
-          const option = options.find(o => o.candidate === menuValue);
+          const option = options.find(o => o.id === menuValue);
           if (option) {
             option.selected = false;
           }
@@ -191,7 +191,7 @@ class App extends Component {
                           {this.state.options.map((o, j) => (
                             <option
                               key={o.id}
-                              value={o.candidate}
+                              value={o.id}
                               disabled={o.selected}
                             >
                               {o.candidate}
