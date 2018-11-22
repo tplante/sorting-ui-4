@@ -64,7 +64,7 @@ const itemStyles = {
   cursor: "pointer"
 };
 const dropdownStyles = {
-  fontSize: 15
+  fontSize: 16
 };
 const submitStyles = {
   ...buttonStyles,
