@@ -88,7 +88,7 @@ class App extends Component {
     const {
       container: { current: container }
     } = this;
-    const { destination } = dragEvent;
+    const { destination, source } = dragEvent;
     const menus = Array.prototype.slice.call(
       container.querySelectorAll("select")
     );
@@ -99,16 +99,8 @@ class App extends Component {
     if (!destination || preventReorder) {
       return;
     }
-
-    const items = reorder(
-      this.state.items,
-      dragEvent.source.index,
-      dragEvent.destination.index
-    );
-
-    this.setState({
-      items
-    });
+    const items = reorder(this.state.items, source.index, destination.index);
+    this.setState({ items });
   };
 
   handleChange = event => {
