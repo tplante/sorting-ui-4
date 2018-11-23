@@ -2,7 +2,8 @@ import React, { Component, createRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const SKIP_VALUE = "skip";
-const ICON_SIZE = 30;
+const ICON_SIZE = 25;
+const GRID_SIZE = 20;
 const SHOW_ICON_DURATION = 1000;
 const options = [
   {
@@ -65,19 +66,18 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-const grid = 20;
 const getItemStyle = (isDragging, draggableStyle) => ({
   position: "relative",
   userSelect: "none",
-  padding: grid,
-  margin: `0 0 ${grid / 2}px 0`,
+  padding: GRID_SIZE,
+  margin: `0 0 ${GRID_SIZE / 2}px 0`,
   // Change background colour if dragging
   background: isDragging ? "lightgreen" : "#d8d8d8",
   // Styles to apply on draggables
   ...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
-  width: 330,
+  width: 315,
   margin: "0 auto"
 });
 
@@ -86,7 +86,7 @@ const iconStyles = {
   transition: "0.2s ease-in-out",
   position: "absolute",
   left: -ICON_SIZE,
-  top: grid,
+  top: GRID_SIZE,
   width: ICON_SIZE,
   height: ICON_SIZE,
   viewBox: `0 0 ${ICON_SIZE} ${ICON_SIZE}`,
@@ -94,7 +94,7 @@ const iconStyles = {
 };
 const buttonStyles = {
   width: "100%",
-  padding: `${grid / 2}px 0`,
+  padding: `${GRID_SIZE / 2}px 0`,
   textAlign: "center",
   fontWeight: "bold",
   cursor: "pointer",
@@ -110,9 +110,9 @@ const optionStyles = {
 const itemStyles = {
   display: "inline-block",
   textAlign: "center",
-  width: 20,
-  marginRight: grid,
-  padding: grid,
+  width: GRID_SIZE,
+  marginRight: GRID_SIZE,
+  padding: GRID_SIZE,
   backgroundColor: "#2c5c6c",
   color: "white",
   borderRadius: "3px 0 0 3px",
@@ -123,7 +123,7 @@ const dropdownStyles = {
 };
 const submitStyles = {
   ...buttonStyles,
-  marginTop: 20,
+  marginTop: GRID_SIZE,
   backgroundColor: "#00b06f",
   color: "white"
 };
