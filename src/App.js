@@ -4,58 +4,49 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 const SKIP_VALUE = "skip";
 const ICON_SIZE = 25;
 const GRID_SIZE = 20;
-const SHOW_ICON_DURATION = 1000;
 const options = [
   {
     candidate: "Barack Obama",
     id: "option-0",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "George Bush",
     id: "option-1",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "Hillary Clinton",
     id: "option-2",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "Bernie Sanders",
     id: "option-3",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "Marco Rubio",
     id: "option-4",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "George Washington",
     id: "option-5",
-    selected: false,
-    showIcon: false
+    selected: false
   },
-  { candidate: "John Adams", id: "option-6", selected: false, showIcon: false },
+  { candidate: "John Adams", id: "option-6", selected: false },
   {
     candidate: "Abraham Lincoln",
     id: "option-7",
-    selected: false,
-    showIcon: false
+    selected: false
   },
   {
     candidate: "Franklin D. Roosevelt",
     id: "option-8",
-    selected: false,
-    showIcon: false
+    selected: false
   },
-  { candidate: "Ron Swanson", id: "option-9", selected: false, showIcon: false }
+  { candidate: "Ron Swanson", id: "option-9", selected: false }
 ];
 
 // Reorder the result
@@ -134,14 +125,10 @@ class App extends Component {
     this.state = {
       items: [options[0]],
       options,
-      submitted: false
+      submitted: false,
+      showIcon: false
     };
     this.container = createRef();
-    this.showIconTimeout = null;
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.showIconTimeout);
   }
 
   handleDragEnd = dragEvent => {
@@ -188,7 +175,9 @@ class App extends Component {
       const optionIndex = options.findIndex(o => o.id === value);
       options[optionIndex].selected = true;
       if (!hasPreviousValue && menuId > 0) {
-        items[menuId].showIcon = true;
+        this.setState({
+          showIcon: true
+        });
       }
       if (!hasPreviousValue && menuId < options.length - 1) {
         items.push(options[menuId + 1]);
@@ -207,10 +196,6 @@ class App extends Component {
     }
     target.previousValue = value;
     this.setState({ options, items });
-    this.showIconTimeout = setTimeout(() => {
-      items.forEach(item => (item.showIcon = false));
-      this.setState({ items });
-    }, SHOW_ICON_DURATION);
   };
 
   handleSubmit = () => {
@@ -245,17 +230,19 @@ class App extends Component {
                         }}
                         key={item.id}
                       >
-                        <svg
-                          style={{
-                            ...iconStyles,
-                            opacity: item.showIcon ? 1 : 0
-                          }}
-                        >
-                          <path
-                            d="M13.7578943,16.6318165 L10.6642975,19.7254012 C10.2981644,20.0915329 9.70460909,20.0915329 9.33847592,19.7254012 L6.24487915,16.6318165 C5.65429263,16.0412323 6.07257429,15.0313915 6.90780948,15.0314306 L8.90632706,15.0314306 L8.90628799,11.0937468 L4.9686279,11.0937468 L4.9686279,13.0922566 C4.9686279,13.9274885 3.95882223,14.3457685 3.36819665,13.7551843 L0.274599878,10.6615996 C-0.0915332925,10.2954679 -0.0915332925,9.70187587 0.274599878,9.3357832 L3.36819665,6.24219851 C3.95878316,5.6516143 4.9686279,6.06989433 4.9686279,6.90512625 L4.9686279,8.9062532 L8.90628799,8.9062532 L8.90628799,4.96860849 L6.90511417,4.96860849 C6.06987897,4.96860849 5.65159732,3.95880676 6.24218383,3.36818349 L9.3357806,0.274598805 C9.70191377,-0.091532935 10.295469,-0.091532935 10.6616022,0.274598805 L13.755199,3.36818349 C14.3457855,3.9587677 13.9275038,4.96860849 13.0922686,4.96860849 L11.0937511,4.96860849 L11.0937511,8.9062532 L15.0314112,8.9062532 L15.0314112,6.90774343 C15.0314112,6.07251151 16.0412168,5.65423148 16.6318034,6.24481569 L19.7254001,9.33840038 C20.0915333,9.70453212 20.0915333,10.2981241 19.7254001,10.6642168 L16.6318034,13.7578015 C16.0412168,14.3483857 15.0313721,13.9301057 15.0314112,13.0948737 L15.0314112,11.0937468 L11.0937901,11.0937468 L11.0937901,15.0313915 L13.094964,15.0313915 C13.9301992,15.0313915 14.3484808,16.0411932 13.7578943,16.6318165 Z"
-                            id="Path"
-                          />
-                        </svg>
+                        {i < this.state.items.length - 1 && (
+                          <svg
+                            style={{
+                              ...iconStyles,
+                              opacity: this.state.showIcon ? 1 : 0
+                            }}
+                          >
+                            <path
+                              d="M13.7578943,16.6318165 L10.6642975,19.7254012 C10.2981644,20.0915329 9.70460909,20.0915329 9.33847592,19.7254012 L6.24487915,16.6318165 C5.65429263,16.0412323 6.07257429,15.0313915 6.90780948,15.0314306 L8.90632706,15.0314306 L8.90628799,11.0937468 L4.9686279,11.0937468 L4.9686279,13.0922566 C4.9686279,13.9274885 3.95882223,14.3457685 3.36819665,13.7551843 L0.274599878,10.6615996 C-0.0915332925,10.2954679 -0.0915332925,9.70187587 0.274599878,9.3357832 L3.36819665,6.24219851 C3.95878316,5.6516143 4.9686279,6.06989433 4.9686279,6.90512625 L4.9686279,8.9062532 L8.90628799,8.9062532 L8.90628799,4.96860849 L6.90511417,4.96860849 C6.06987897,4.96860849 5.65159732,3.95880676 6.24218383,3.36818349 L9.3357806,0.274598805 C9.70191377,-0.091532935 10.295469,-0.091532935 10.6616022,0.274598805 L13.755199,3.36818349 C14.3457855,3.9587677 13.9275038,4.96860849 13.0922686,4.96860849 L11.0937511,4.96860849 L11.0937511,8.9062532 L15.0314112,8.9062532 L15.0314112,6.90774343 C15.0314112,6.07251151 16.0412168,5.65423148 16.6318034,6.24481569 L19.7254001,9.33840038 C20.0915333,9.70453212 20.0915333,10.2981241 19.7254001,10.6642168 L16.6318034,13.7578015 C16.0412168,14.3483857 15.0313721,13.9301057 15.0314112,13.0948737 L15.0314112,11.0937468 L11.0937901,11.0937468 L11.0937901,15.0313915 L13.094964,15.0313915 C13.9301992,15.0313915 14.3484808,16.0411932 13.7578943,16.6318165 Z"
+                              id="Path"
+                            />
+                          </svg>
+                        )}
                         <label style={itemStyles} htmlFor={`menu-${i}`}>
                           {i + 1}
                         </label>
