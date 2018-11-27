@@ -6,47 +6,42 @@ const ICON_SIZE = 25;
 const GRID_SIZE = 20;
 const options = [
   {
-    candidate: "Barack Obama",
+    candidate: "Medelhavsdeli",
     id: "option-0",
-    selected: false
+    selected: false,
+    showIcon: false
   },
+  { candidate: "Tony's", id: "option-1", selected: false, showIcon: false },
+  { candidate: "A Bowl", id: "option-2", selected: false, showIcon: false },
+  { candidate: "Magnolia", id: "option-3", selected: false, showIcon: false },
   {
-    candidate: "George Bush",
-    id: "option-1",
-    selected: false
-  },
-  {
-    candidate: "Hillary Clinton",
-    id: "option-2",
-    selected: false
-  },
-  {
-    candidate: "Bernie Sanders",
-    id: "option-3",
-    selected: false
-  },
-  {
-    candidate: "Marco Rubio",
+    candidate: "Falafelbaren",
     id: "option-4",
-    selected: false
+    selected: false,
+    showIcon: false
+  },
+  { candidate: "Mae Thai", id: "option-5", selected: false, showIcon: false },
+  {
+    candidate: "Kalf & Hansen",
+    id: "option-6",
+    selected: false,
+    showIcon: false
+  },
+  { candidate: "Coop salad", id: "option-7", selected: false, showIcon: false },
+  { candidate: "Mama Wolf", id: "option-8", selected: false, showIcon: false },
+  { candidate: "Paradiset", id: "option-9", selected: false, showIcon: false },
+  {
+    candidate: "Barobao (Hipster Bao)",
+    id: "option-10",
+    selected: false,
+    showIcon: false
   },
   {
-    candidate: "George Washington",
-    id: "option-5",
-    selected: false
-  },
-  { candidate: "John Adams", id: "option-6", selected: false },
-  {
-    candidate: "Abraham Lincoln",
-    id: "option-7",
-    selected: false
-  },
-  {
-    candidate: "Franklin D. Roosevelt",
-    id: "option-8",
-    selected: false
-  },
-  { candidate: "Ron Swanson", id: "option-9", selected: false }
+    candidate: "The Italian cousins",
+    id: "option-11",
+    selected: false,
+    showIcon: false
+  }
 ];
 
 // Reorder the result
@@ -125,8 +120,7 @@ class App extends Component {
     this.state = {
       items: [options[0]],
       options,
-      submitted: false,
-      showIcon: false
+      submitted: false
     };
     this.container = createRef();
   }
@@ -163,7 +157,7 @@ class App extends Component {
       state: { options, items }
     } = this;
     const menus = container.querySelectorAll("select");
-    const menuId = parseInt(id.slice(-1));
+    const menuId = parseInt(id.split("-")[1]);
     const hasPreviousValue = previousValue && previousValue !== SKIP_VALUE;
     if (hasPreviousValue) {
       const previousOptionIndex = options.findIndex(
@@ -174,15 +168,12 @@ class App extends Component {
     if (value !== SKIP_VALUE) {
       const optionIndex = options.findIndex(o => o.id === value);
       options[optionIndex].selected = true;
-      if (!hasPreviousValue && menuId > 0) {
-        this.setState({
-          showIcon: true
-        });
-      }
-      if (!hasPreviousValue && menuId < options.length - 1) {
+      items[menuId].showIcon = true;
+      if (!hasPreviousValue && menus.length < options.length) {
         items.push(options[menuId + 1]);
       }
     } else if (hasPreviousValue) {
+      items[menuId].showIcon = false;
       menus.forEach((menu, i) => {
         const { value: menuValue } = menu;
         if (i > menuId) {
@@ -205,7 +196,9 @@ class App extends Component {
   render() {
     return (
       <div ref={this.container}>
-        <h1 style={{ textAlign: "center" }}>Rank your favorite candidates</h1>
+        <h1 style={{ textAlign: "center" }}>
+          What are your fave lunch places around the office?
+        </h1>
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
@@ -230,11 +223,11 @@ class App extends Component {
                         }}
                         key={item.id}
                       >
-                        {i < this.state.items.length - 1 && (
+                        {i < this.state.items.length && (
                           <svg
                             style={{
                               ...iconStyles,
-                              opacity: this.state.showIcon ? 1 : 0
+                              opacity: item.showIcon ? 1 : 0
                             }}
                           >
                             <path
